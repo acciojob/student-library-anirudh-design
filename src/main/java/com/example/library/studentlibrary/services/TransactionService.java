@@ -71,33 +71,21 @@ public class TransactionService {
                     Transaction transaction=Transaction.builder().transactionDate(new Date()).isIssueOperation(true).book(book.get())
                             .card(card.get()).transactionStatus(TransactionStatus.FAILED).build();
                     transactionRepository5.save(transaction);
-                    try {
-                        throw new Exception("Book limit has reached for this card");
-                    }catch (Exception e){
-                        System.out.println(e.getMessage());
-                    }
+                    throw new Exception("Book limit has reached for this card");
                 }
             }
             else{
                 Transaction transaction=Transaction.builder().transactionDate(new Date()).book(book.get()).isIssueOperation(true)
                         .transactionStatus(TransactionStatus.FAILED).build();
                 transactionRepository5.save(transaction);
-                try{
-                    throw new Exception("Card is invalid");
-                }catch (Exception e){
-                    System.out.println(e.getMessage());
-                }
+                throw new Exception("Card is invalid");
             }
         }
         else{
             Transaction transaction=Transaction.builder().transactionDate(new Date()).isIssueOperation(true)
                     .transactionStatus(TransactionStatus.FAILED).build();
             transactionRepository5.save(transaction);
-            try{
-                throw new Exception("Book is either unavailable or not present");
-            }catch (Exception e){
-                System.out.println(e.getMessage());
-            }
+            throw new Exception("Book is either unavailable or not present");
         }
 
        return transactionId; //return transactionId instead
@@ -106,12 +94,7 @@ public class TransactionService {
     public Transaction returnBook(int cardId, int bookId) throws Exception{
 
         List<Transaction> transactions = transactionRepository5.find(cardId, bookId,TransactionStatus.SUCCESSFUL, true);
-        Transaction transaction=null;
-        try {
-            transaction = transactions.get(transactions.size() - 1);
-        }catch (Exception e){
-            System.out.println(e.getMessage());
-        }
+        Transaction transaction = transactions.get(transactions.size() - 1);
         Date issuedDate=transaction.getTransactionDate();
         Calendar cal = Calendar.getInstance();
         cal.setTime(issuedDate);

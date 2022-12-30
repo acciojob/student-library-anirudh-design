@@ -18,14 +18,14 @@ public class BookController {
     BookService bookService;
 
     //Write createBook API with required annotations
-    @PostMapping("/book")
+    @PostMapping("/book/")
     public ResponseEntity<String> createBook(@RequestBody() Book book){
         bookService.createBook(book);
         return new ResponseEntity<String>("Success", HttpStatus.CREATED);
     }
 
     //Add required annotations
-    @GetMapping("/book")
+    @GetMapping("/book/")
     public ResponseEntity getBooks(@RequestParam(value = "genre", required = false) String genre,
                                    @RequestParam(value = "available", required = false, defaultValue = "false") boolean available,
                                    @RequestParam(value = "author", required = false) String author){
