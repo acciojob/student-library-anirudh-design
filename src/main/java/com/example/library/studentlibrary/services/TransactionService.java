@@ -53,18 +53,25 @@ public class TransactionService {
             Optional<Card> card=cardRepository5.findById(cardId);
             if(card.isPresent() && card.get().getCardStatus()==CardStatus.ACTIVATED){
                 if(card.get().getBooks().size()<max_allowed_books){
-                    Transaction transaction=Transaction.builder().book(book.get()).card(card.get()).
-                            transactionStatus(TransactionStatus.SUCCESSFUL).isIssueOperation(true).transactionDate(new Date()).build();
+                    Transaction transaction=Transaction.builder().card(card.get()).book(book.get())
+                            .transactionStatus(TransactionStatus.SUCCESSFUL)
+                            .isIssueOperation(true).transactionDate(new Date()).build();
+
+                    List<Transaction> transactions=book.get().getTransactions();
+                    transactions.add(transaction);
+                    book.get().setCard(card.get());
+                    book.get().setAvailable(false);
+                    book.get().setTransactions(transactions);
+
                     List<Book> books=card.get().getBooks();
                     books.add(book.get());
                     card.get().setBooks(books);
-                    cardRepository5.save(card.get());
-                    List<Transaction> transactions=book.get().getTransactions();
-                    transactions.add(transaction);
-                    book.get().setAvailable(false);
-                    book.get().setTransactions(transactions);
+
+                    transaction.setCard(card.get());
+
+                    bookRepository5.updateBook(book.get());
+
                     transactionId=transaction.getTransactionId();
-                    bookRepository5.save(book.get());
                     transactionRepository5.save(transaction);
                 }
                 else{
@@ -114,9 +121,9 @@ public class TransactionService {
         List<Book> books=card.getBooks();
         books.remove(book);
         card.setBooks(books);
-        cardRepository5.save(card);
 
         book.setAvailable(true);
+        book.setCard(null);
 
         //for the given transaction calculate the fine amount considering the book has been returned exactly when this function is called
         //make the book available for other users
@@ -128,7 +135,8 @@ public class TransactionService {
         List<Transaction> transactionsList=book.getTransactions();
         transactionsList.add(returnBookTransaction);
         book.setTransactions(transactionsList);
-        bookRepository5.save(book);
+
+        bookRepository5.updateBook(book);
         transactionRepository5.save(returnBookTransaction);
         return returnBookTransaction; //return the transaction after updating all details
     }

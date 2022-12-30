@@ -26,7 +26,6 @@ public class StudentService {
 
     public Student getDetailsById(int id){
         Student student = studentRepository4.findById(id).get();
-
         return student;
     }
 
