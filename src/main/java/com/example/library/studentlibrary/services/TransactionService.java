@@ -106,7 +106,12 @@ public class TransactionService {
     public Transaction returnBook(int cardId, int bookId) throws Exception{
 
         List<Transaction> transactions = transactionRepository5.find(cardId, bookId,TransactionStatus.SUCCESSFUL, true);
-        Transaction transaction = transactions.get(transactions.size() - 1);
+        Transaction transaction=null;
+        try {
+            transaction = transactions.get(transactions.size() - 1);
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
         Date issuedDate=transaction.getTransactionDate();
         Calendar cal = Calendar.getInstance();
         cal.setTime(issuedDate);
@@ -135,7 +140,7 @@ public class TransactionService {
         //make a new transaction for return book which contains the fine amount as well
 
         Transaction returnBookTransaction  = Transaction.builder().transactionDate(new Date()).book(book).card(card)
-                .fineAmount(fine).transactionStatus(TransactionStatus.SUCCESSFUL).isIssueOperation(false).build();
+                .transactionDate(currentDate).fineAmount(fine).transactionStatus(TransactionStatus.SUCCESSFUL).isIssueOperation(false).build();
 
         List<Transaction> transactionsList=book.getTransactions();
         transactionsList.add(returnBookTransaction);
