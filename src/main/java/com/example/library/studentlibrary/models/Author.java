@@ -10,8 +10,8 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Getter
 @Setter
+@Getter
 @AllArgsConstructor
 @Builder
 public class Author {

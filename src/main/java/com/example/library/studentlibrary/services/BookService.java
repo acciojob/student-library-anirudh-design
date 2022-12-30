@@ -1,5 +1,6 @@
 package com.example.library.studentlibrary.services;
 
+import com.example.library.studentlibrary.models.Author;
 import com.example.library.studentlibrary.models.Book;
 import com.example.library.studentlibrary.models.Genre;
 import com.example.library.studentlibrary.repositories.BookRepository;
@@ -16,6 +17,8 @@ public class BookService {
     BookRepository bookRepository2;
 
     public void createBook(Book book){
+        Author author=book.getAuthor();
+        author.getBooksWritten().add(book);
         bookRepository2.save(book);
     }
 
