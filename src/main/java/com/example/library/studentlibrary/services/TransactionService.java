@@ -71,21 +71,33 @@ public class TransactionService {
                     Transaction transaction=Transaction.builder().transactionDate(new Date()).isIssueOperation(true).book(book.get())
                             .card(card.get()).transactionStatus(TransactionStatus.FAILED).build();
                     transactionRepository5.save(transaction);
-                    throw new Exception("Book limit has reached for this card");
+                    try {
+                        throw new Exception("Book limit has reached for this card");
+                    }catch (Exception e){
+                        System.out.println(e.getMessage());
+                    }
                 }
             }
             else{
                 Transaction transaction=Transaction.builder().transactionDate(new Date()).book(book.get()).isIssueOperation(true)
                         .transactionStatus(TransactionStatus.FAILED).build();
                 transactionRepository5.save(transaction);
-                throw new Exception("Card is invalid");
+                try{
+                    throw new Exception("Card is invalid");
+                }catch (Exception e){
+                    System.out.println(e.getMessage());
+                }
             }
         }
         else{
             Transaction transaction=Transaction.builder().transactionDate(new Date()).isIssueOperation(true)
                     .transactionStatus(TransactionStatus.FAILED).build();
             transactionRepository5.save(transaction);
-            throw new Exception("Book is either unavailable or not present");
+            try{
+                throw new Exception("Book is either unavailable or not present");
+            }catch (Exception e){
+                System.out.println(e.getMessage());
+            }
         }
 
        return transactionId; //return transactionId instead
