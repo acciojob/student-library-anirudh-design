@@ -12,8 +12,8 @@ import java.util.List;
 @Entity
 @Setter
 @Getter
-@AllArgsConstructor
 @Builder
+@AllArgsConstructor
 public class Author {
 
     @Id

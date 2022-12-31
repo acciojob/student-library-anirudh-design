@@ -16,11 +16,7 @@ public class BookService {
     @Autowired
     BookRepository bookRepository2;
 
-    public void createBook(Book book){
-        Author author=book.getAuthor();
-        author.getBooksWritten().add(book);
-        bookRepository2.save(book);
-    }
+    public void createBook(Book book){bookRepository2.save(book);}
 
     public List<Book> getBooks(String genre, boolean available, String author){
         List<Book> books;
