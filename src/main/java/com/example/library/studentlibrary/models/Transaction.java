@@ -20,7 +20,7 @@ public class Transaction {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    private String transactionId = UUID.randomUUID().toString(); // externalId
+    private String transactionId = UUID.randomUUID().toString(); //externalId
 
     @ManyToOne
     @JoinColumn
